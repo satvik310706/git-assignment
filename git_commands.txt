@@ -1,0 +1,181 @@
+=====================================================================
+ GIT COMMANDS USED IN THE ASSIGNMENT  (git_commands.txt)
+ Project folder : git-assignment
+ Remote         : GitHub (public repository)
+=====================================================================
+
+---------------------------------------------------------------------
+ STEP 0 - ONE-TIME CONFIGURATION
+---------------------------------------------------------------------
+git config --global user.name "Your Name"
+    Sets the author name that is stored in every commit I make.
+
+git config --global user.email "you@example.com"
+    Sets the author email that is stored in every commit I make.
+
+---------------------------------------------------------------------
+ STEP 1 - LOCAL REPOSITORY SETUP
+---------------------------------------------------------------------
+mkdir git-assignment
+    Creates the project folder on my local machine.
+
+cd git-assignment
+    Moves into the project folder so all later commands run inside it.
+
+cat > index.html   (and)   cat > about.html
+    Creates the two HTML files (index.html and about.html) with basic
+    page content. (Any text editor can be used instead.)
+
+git init
+    Initializes an empty Git repository (creates the hidden .git folder)
+    in the project folder. No GitHub repository was created first.
+
+git branch -M main
+    Renames the default branch to "main" so the branch name is consistent.
+
+ls -a
+    Lists all files including hidden ones, to show that .git now exists.
+
+git status
+    Shows the state of the working directory: index.html and about.html
+    appear as untracked files.
+
+---------------------------------------------------------------------
+ STEP 2 - GIT WORKFLOW EXECUTION
+---------------------------------------------------------------------
+git add index.html about.html
+    Stages both files so they are included in the next commit.
+
+git commit -m "Initial commit: add index.html and about.html"
+    Records the initial state of the project as the first commit.
+
+(edit index.html)
+    Modified index.html by adding a welcome paragraph and a link to
+    about.html.
+
+git add index.html
+    Stages the modified index.html.
+
+git commit -m "Update index.html: add welcome text and link to about page"
+    Creates the second commit that records the change to index.html.
+
+git branch feature
+    Creates a new branch named "feature" at the current commit.
+
+git switch feature
+    Switches to the feature branch so new commits go to it, not to main.
+
+(edit about.html)
+    Modified about.html on the feature branch (added a description and a
+    link back to the home page).
+
+git add about.html
+    Stages the modified about.html.
+
+git commit -m "Add description and home link to about.html (feature branch)"
+    Commits the change to the feature branch.
+
+git switch main
+    Switches back to the main branch.
+
+git merge feature --no-ff -m "Merge branch 'feature' into main"
+    Merges the feature branch into main. --no-ff forces a merge commit so
+    the branch activity stays visible in the history.
+
+git log --oneline --graph --all --decorate
+    Displays the full commit history as a graph, showing all commits,
+    both branches, and the merge.
+
+---------------------------------------------------------------------
+ STEP 3 - .gitignore IMPLEMENTATION
+---------------------------------------------------------------------
+cat > .gitignore
+    Creates the .gitignore file containing two rules:
+        *.log     -> ignore every file ending in .log
+        temp/     -> ignore the whole temp folder
+
+mkdir temp
+    Creates a temp folder to test the ignore rule.
+
+echo "temporary data" > temp/cache.txt
+    Creates a test file inside temp/ (should be ignored).
+
+echo "debug output" > debug.log
+    Creates a test .log file (should be ignored).
+
+git status
+    Shows that only .gitignore is untracked; debug.log and temp/ are not
+    listed, which proves they are being ignored.
+
+git add .gitignore
+    Stages the .gitignore file.
+
+git commit -m "Add .gitignore to ignore *.log files and temp/ folder"
+    Commits the .gitignore file to the repository.
+
+---------------------------------------------------------------------
+ STEP 4 - UNDO OPERATION
+---------------------------------------------------------------------
+echo "Temporary notes that will be undone." > notes.txt
+    Creates a new file for the additional commit.
+
+git add notes.txt
+    Stages notes.txt.
+
+git commit -m "Add notes.txt (this commit will be undone)"
+    Makes the additional commit that will be undone.
+
+git log --oneline
+    Shows the history BEFORE the undo (the notes.txt commit is on top).
+
+git revert HEAD --no-edit
+    Undoes the last commit by creating a new commit that applies the
+    opposite changes. notes.txt is removed, and the history is kept intact,
+    which is the safe method for a commit that may be shared.
+
+git log --oneline
+    Shows the history AFTER the undo (a "Revert" commit has been added).
+
+ls
+    Confirms that notes.txt is no longer in the working directory.
+
+git status
+    Confirms the working tree is clean after the undo.
+
+---------------------------------------------------------------------
+ STEP 5 - GITHUB INTEGRATION
+---------------------------------------------------------------------
+(Create a new PUBLIC, EMPTY repository on github.com - no README, no
+ .gitignore, no license - and copy its URL.)
+
+git remote add origin https://github.com/<username>/<repository-name>.git
+    Connects the local repository to the GitHub repository under the
+    name "origin".
+
+git remote -v
+    Verifies that the remote URL was added correctly.
+
+git push -u origin main
+    Uploads the main branch (with all its commits) to GitHub and sets
+    origin/main as the default upstream branch.
+
+git push origin feature
+    Uploads the feature branch so the branch history is also visible on
+    GitHub.
+
+---------------------------------------------------------------------
+ STEP 6 - COMMAND DOCUMENTATION FILE
+---------------------------------------------------------------------
+git add git_commands.txt
+    Stages this documentation file.
+
+git commit -m "Add git_commands.txt documenting all Git commands used"
+    Commits the documentation file.
+
+git push
+    Pushes the new commit to GitHub, so git_commands.txt is also in the
+    public repository.
+
+=====================================================================
+ END OF FILE
+=====================================================================
